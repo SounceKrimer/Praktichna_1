@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+// Рекурсивна функція для підрахунку кількості чисел з розрядами
+int countNumbers(int digits, int prevDigit, int prevPrevDigit) {
+    // Базовий випадок: якщо залишилось лише один розряд, повертаємо 2 (5 або 9)
+    if (digits == 1) {
+        return 2;
+    }
+
+    int count = 0;
+
+    // Генеруємо числа з розрядами за умовою
+    for (int digit = 5; digit <= 9; digit += 4) {
+        // Перевіряємо, що три однакові цифри не стоять поруч
+        if (digit != prevDigit || digit != prevPrevDigit) {
+            // Рекурсивно викликаємо функцію для наступного розряду і додаємо результат до загальної кількості
+            count += countNumbers(digits - 1, digit, prevDigit);
+        }
+    }
+
+    return count;
+}
+
+int main() {
+    int digits;
+    printf("Введіть кількість розрядів: ");
+    scanf("%d", &digits);
+
+    // Викликаємо функцію для підрахунку кількості чисел
+    int result = countNumbers(digits, 0, 0);
+
+    printf("Кількість чисел з %d розрядами: %d\n", digits, result);
+
+    return 0;
+}
