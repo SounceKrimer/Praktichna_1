@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+
+void swap(char* x, char* y) {
+    char temp = *x;
+    *x = *y;
+    *y = temp;
+}
+
+void generateAnagrams(char* word, int start, int end, int* count) {
+    if (start == end) {
+        printf("%s\n", word);
+        (*count)++;
+    } else {
+        for (int i = start; i <= end; i++) {
+            // Перевіряємо, чи літера вже була вибрана на попередньому кроці
+            int isDuplicate = 0;
+            for (int j = start; j < i; j++) {
+                if (word[j] == word[i]) {
+                    isDuplicate = 1;
+                    break;
+                }
+            }
+            if (!isDuplicate) {
+                swap((word + start), (word + i));
+                generateAnagrams(word, start + 1, end, count);
+                swap((word + start), (word + i));  // Відновлення початкового порядку для наступних перестановок
+            }
+        }
+    }
+}
+
+int main() {
+    char word[15];
+    printf("Введіть слово: ");
+    scanf("%s", word);
+
+    int count = 0;
+    int length = strlen(word);
+    generateAnagrams(word, 0, length - 1, &count);
+
+    printf("Кількість анаграм: %d\n", count);
+
+    return 0;
+}
